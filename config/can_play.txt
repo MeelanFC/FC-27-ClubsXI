@@ -1,0 +1,19 @@
+# Who can play where
+#
+# The match data only shows where a person HAS played. It cannot show who is
+# WILLING to play somewhere new. Only you can tell the tool that.
+#
+# One line per player:
+#
+#   Name = band, band, band
+#
+# The four bands are:  goalkeeper  defender  midfielder  forward
+#
+# The API cannot tell LB from CB, so the bands are broad on purpose.
+#
+# Put a minus in front of a band to say a person will NOT play it:
+#
+#   SomeName = midfielder, -goalkeeper
+#
+# People who are not listed are suggested from what they have played.
+# Run  python run.py chart  to see the effect.

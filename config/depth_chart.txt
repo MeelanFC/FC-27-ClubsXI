@@ -1,0 +1,40 @@
+# ClubsXI depth chart
+#
+# This file is yours. Nothing in EA's data can fill it in, so nothing will
+# overwrite it. Edit it by hand.
+#
+# HOW TO WRITE A LINE
+#
+#   SLOT = starter, bench, reserve
+#
+# Use the exact in-game names, the ones EA shows.
+# You do not have to fill anything in. A blank spot gets filled from who has
+# played that broad role, how often, and how recently. Filled names are
+# marked with a star.
+#
+# Write a name only when you want to override the tool. Your names always win.
+#
+# Slot names the tool understands:
+#   GK
+#   LB  LCB  CB  RCB  RB  LWB  RWB
+#   CDM LDM  RDM  LCM  CM  RCM  LM  RM  CAM
+#   LW  LF  CF  ST  RF  RW
+#
+# Run  python run.py chart  to check it against real games.
+
+FORMATION: 4-3-3 (2)
+
+GK  = , ,
+
+LB  = , ,
+LCB = , ,
+RCB = , ,
+RB  = , ,
+
+CDM = , ,
+LCM = , ,
+RCM = , ,
+
+LW  = , ,
+ST  = , ,
+RW  = , ,

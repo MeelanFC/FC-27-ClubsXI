@@ -1,0 +1,104 @@
+# Two containers: the collector (the only writer) and the web viewer (read only).
+# All club settings come from the .env file next to this file.
+services:
+  collector:
+    build: .
+    image: clubsxi:latest
+    container_name: clubsxi-collector
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      CLUBSXI_DB: "/data/clubsxi.sqlite3"
+      CLUBSXI_REPORT: "/data/report.txt"
+      CLUBSXI_CHART: "/config/depth_chart.txt"
+      CLUBSXI_CAN_PLAY: "/config/can_play.txt"
+    volumes:
+      - clubsxi-data:/data
+      # Hand-edited files. Read only to the container.
+      - ./config:/config:ro
+
+    # The job is a few small web calls every 30 minutes. It sleeps the rest
+    # of the time. These caps stop it from ever slowing the host down.
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 192M
+          pids: 128
+        reservations:
+          memory: 48M
+
+    # It only needs outbound HTTPS and its own data folder.
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Read-only viewer. A separate container, so the collector stays the only writer.
+  web:
+    build: .
+    image: clubsxi:latest
+    container_name: clubsxi-web
+    restart: unless-stopped
+    depends_on:
+      - collector
+    command: ["python", "-m", "clubsxi", "web"]
+    env_file: .env
+    environment:
+      CLUBSXI_DB: "/data/clubsxi.sqlite3"
+      CLUBSXI_CHART: "/config/depth_chart.txt"
+      CLUBSXI_CAN_PLAY: "/config/can_play.txt"
+      CLUBSXI_WEB_HOST: "0.0.0.0"
+
+    # The viewer has no login. By default it opens only on the server itself.
+    # To open it to your home network, change the line below to "8080:8080".
+    # Do not open this port to the internet.
+    ports:
+      - "127.0.0.1:8080:8080"
+
+    volumes:
+      - clubsxi-data:/data:ro
+      - ./config:/config:ro
+
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 128M
+          pids: 128
+        reservations:
+          memory: 32M
+
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/healthz',timeout=5).status==200 else 1)"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  clubsxi-data:

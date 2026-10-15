@@ -1,0 +1,10 @@
+# Where people really play, for the Squad page position labels. Optional.
+#
+# One per line:  name = LW | ST | RW | W (either wing) | CB | LB | RB | FB (either side)
+#
+# People who are not listed go by build:
+#   Finisher or Target = ST, other attackers = wing
+#   Progressor or Boss = CB, other defenders = full back
+#
+# Example (remove the # to use):
+# SomeName = RW

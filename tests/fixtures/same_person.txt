@@ -1,0 +1,2 @@
+# Test file: one person who plays on two EA accounts.
+Player07 = Player09

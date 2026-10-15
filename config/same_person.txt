@@ -1,0 +1,12 @@
+# One person, two EA accounts. Optional.
+#
+# Some people play on a second account. Write one line per account:
+#
+#   Account name = Person name
+#
+# The Squad page then treats both accounts as one person, so it never
+# names the same human twice. The raw match data stays separate.
+#
+# Example (remove the # to use):
+# SecondAccount99 = MainAccount
+# MainAccount = MainAccount

@@ -1,0 +1,13 @@
+# Primary slot per person. Optional.
+#
+# Each person STARTS (gold) in one slot only. Anywhere else they can only be
+# silver or bronze. If you leave a person out, the tool picks the slot where
+# they are needed most (the fewest other people with 5 games there).
+# A line here always wins.
+#
+#   Name = SLOT
+#
+# SLOT is one of:  GK  CB  CDM  CM  WING  ST
+#
+# Example (remove the # to use):
+# SomeName = CDM
